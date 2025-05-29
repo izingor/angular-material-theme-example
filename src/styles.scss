@@ -1,1 +1,157 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@use './styles/styles_theme-colors.scss' as theme-colors;
+
+// Include the common styles for Angular Material
+@include mat.core();
+
+// Light theme using your custom generated palettes
+$light-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: theme-colors.$primary-palette,
+    tertiary: theme-colors.$tertiary-palette,
+  ),
+  typography: (
+    brand-family: 'Roboto, sans-serif',
+    bold-weight: 700,
+  ),
+  density: (
+    scale: 0,
+  )
+));
+
+// Dark theme using the same custom palettes
+$dark-theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: theme-colors.$primary-palette,
+    tertiary: theme-colors.$tertiary-palette,
+  ),
+  typography: (
+    brand-family: 'Roboto, sans-serif',
+    bold-weight: 700,
+  ),
+  density: (
+    scale: 0,
+  )
+));
+
+// Apply themes with proper selectors and expose theme colors as CSS custom properties
+:root {
+  @include mat.all-component-themes($light-theme);
+  
+  & {
+    // Expose theme colors as CSS custom properties
+    --theme-primary: #{mat.get-theme-color($light-theme, primary)};
+    --theme-primary-container: #{mat.get-theme-color($light-theme, primary, 90)};
+    --theme-on-primary: #{mat.get-theme-color($light-theme, on-primary)};
+    --theme-secondary: #{mat.get-theme-color($light-theme, secondary)};
+    --theme-tertiary: #{mat.get-theme-color($light-theme, tertiary)};
+    --theme-surface: #{mat.get-theme-color($light-theme, surface)};
+    --theme-surface-container: #{mat.get-theme-color($light-theme, surface-container)};
+    --theme-on-surface: #{mat.get-theme-color($light-theme, on-surface)};
+    --theme-outline: #{mat.get-theme-color($light-theme, outline)};
+    --theme-outline-variant: #{mat.get-theme-color($light-theme, outline-variant)};
+    
+    // Custom theme variables - matching your image colors
+    --theme-gradient-start: #f0f4f8;
+    --theme-gradient-end: #d6e7f0;
+    --theme-card-background: #{mat.get-theme-color($light-theme, surface-container-high)};
+    --theme-hover-shadow: rgba(41, 104, 163, 0.15);
+  }
+}
+
+.dark-theme {
+  @include mat.all-component-colors($dark-theme);
+  
+  & {
+    // Override theme colors for dark mode
+    --theme-primary: #{mat.get-theme-color($dark-theme, primary)};
+    --theme-primary-container: #{mat.get-theme-color($dark-theme, primary, 30)};
+    --theme-on-primary: #{mat.get-theme-color($dark-theme, on-primary)};
+    --theme-secondary: #{mat.get-theme-color($dark-theme, secondary)};
+    --theme-tertiary: #{mat.get-theme-color($dark-theme, tertiary)};
+    --theme-surface: #{mat.get-theme-color($dark-theme, surface)};
+    --theme-surface-container: #{mat.get-theme-color($dark-theme, surface-container)};
+    --theme-on-surface: #{mat.get-theme-color($dark-theme, on-surface)};
+    --theme-outline: #{mat.get-theme-color($dark-theme, outline)};
+    --theme-outline-variant: #{mat.get-theme-color($dark-theme, outline-variant)};
+    
+    // Custom dark theme variables
+    --theme-gradient-start: #0d1b0d;
+    --theme-gradient-end: #1b3d1b;
+    --theme-card-background: rgba(255, 255, 255, 0.08);
+    --theme-hover-shadow: rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Custom styles using theme variables */
+html, body { height: 100%; }
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+.theme-container {
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.light-theme {
+  background: linear-gradient(135deg, var(--theme-gradient-start) 0%, var(--theme-gradient-end) 100%);
+  color: var(--theme-on-surface);
+}
+
+.dark-theme {
+  background: linear-gradient(135deg, var(--theme-gradient-start) 0%, var(--theme-gradient-end) 100%);
+  color: var(--theme-on-surface);
+  
+  .mat-mdc-card {
+    background: var(--theme-card-background);
+    backdrop-filter: blur(10px);
+  }
+  
+  .demo-section {
+    border-color: var(--theme-outline-variant);
+  }
+}
+
+.demo-section {
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid var(--theme-outline-variant);
+  border-radius: 8px;
+}
+
+.color-palette {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.color-swatch {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  border: 1px solid var(--theme-outline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.color-swatch.primary {
+  background-color: var(--theme-primary);
+  color: var(--theme-on-primary);
+}
+
+.color-swatch.accent {
+  background-color: var(--theme-tertiary);
+  color: var(--theme-on-primary);
+}
+
+.color-swatch.light {
+  background-color: var(--theme-primary-container);
+  color: var(--theme-primary);
+}
